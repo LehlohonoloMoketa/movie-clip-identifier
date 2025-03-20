@@ -1,7 +1,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, File, X, Play, Pause } from 'lucide-react';
+import { Upload, File, X, Play, Pause, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import LoadingAnimation from './LoadingAnimation';
 
@@ -99,6 +99,7 @@ const UploadSection = () => {
     // Simulate processing with a timeout
     setTimeout(() => {
       setIsLoading(false);
+      toast.info('This is a prototype - showing a demo result with mock data');
       navigate('/result');
     }, 5000);
   };
@@ -109,6 +110,16 @@ const UploadSection = () => {
         <LoadingAnimation />
       ) : (
         <>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-6 flex items-start gap-3">
+            <AlertCircle className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm text-blue-800 font-medium">Prototype Demo</p>
+              <p className="text-xs text-blue-700 mt-1">
+                This is a conceptual demo using mock data. In a real implementation, this would use AI to analyze video content against a large movie database.
+              </p>
+            </div>
+          </div>
+          
           {!videoSrc ? (
             <div 
               className={`drop-zone ${dragActive ? 'active' : ''}`}
@@ -187,7 +198,7 @@ const UploadSection = () => {
             disabled={!file}
             className={`w-full mt-6 btn-accent ${!file ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            Identify Movie
+            Identify Movie (Demo)
           </button>
         </>
       )}
