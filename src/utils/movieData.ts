@@ -1,4 +1,3 @@
-
 export interface Movie {
   id: string;
   title: string;
@@ -15,6 +14,45 @@ export interface Movie {
     price?: string; // optional for purchase options
   }[];
   similarMovies: {
+    id: string;
+    title: string;
+    year: number;
+    poster: string;
+  }[];
+  scenes?: MovieScene[];
+  soundtrack?: SoundtrackItem[];
+  cast?: CastMember[];
+}
+
+export interface MovieScene {
+  id: string;
+  timeframe: string; // e.g., "01:24:15"
+  description: string;
+  image?: string;
+  location?: {
+    name: string;
+    coordinates?: {
+      lat: number;
+      lng: number;
+    };
+  };
+  trivia?: string[];
+}
+
+export interface SoundtrackItem {
+  title: string;
+  artist: string;
+  timeframe: string; // e.g., "01:05:23"
+  spotifyUrl?: string;
+}
+
+export interface CastMember {
+  id: string;
+  name: string;
+  character: string;
+  profile: string;
+  scenes?: string[]; // IDs of scenes they appear in
+  otherMovies?: {
     id: string;
     title: string;
     year: number;
@@ -67,6 +105,90 @@ export const randomMovies: Movie[] = [
         title: "Tenet",
         year: 2020,
         poster: "https://image.tmdb.org/t/p/w500/k68nPLbIST6NP96JmTxmZijEvCA.jpg",
+      }
+    ],
+    scenes: [
+      {
+        id: "inc-scene-1",
+        timeframe: "00:45:12",
+        description: "The iconic Paris folding scene",
+        image: "https://media.tenor.com/Q0w0ENr-3ysAAAAC/inception-paris.gif",
+        location: {
+          name: "Paris, France",
+          coordinates: {
+            lat: 48.8566,
+            lng: 2.3522
+          }
+        },
+        trivia: [
+          "This scene was achieved with a combination of practical effects and CGI",
+          "The set was actually built to rotate 360 degrees"
+        ]
+      },
+      {
+        id: "inc-scene-2",
+        timeframe: "01:32:45",
+        description: "Zero gravity hotel corridor fight",
+        image: "https://media1.tenor.com/m/vIoqS2N2J0sAAAAC/inception-hallway.gif",
+        location: {
+          name: "Bedfordshire, UK (studio)",
+        },
+        trivia: [
+          "Joseph Gordon-Levitt performed most of his own stunts for this sequence",
+          "The entire set could rotate to create the zero-gravity effect"
+        ]
+      }
+    ],
+    soundtrack: [
+      {
+        title: "Time",
+        artist: "Hans Zimmer",
+        timeframe: "02:10:45",
+        spotifyUrl: "https://open.spotify.com/track/6ZFbXIJkuI1dVNWvzJzown"
+      },
+      {
+        title: "Dream Is Collapsing",
+        artist: "Hans Zimmer",
+        timeframe: "00:45:30",
+        spotifyUrl: "https://open.spotify.com/track/3nGIlTi0OKKHHu7e8R25aj"
+      }
+    ],
+    cast: [
+      {
+        id: "actor-1",
+        name: "Leonardo DiCaprio",
+        character: "Dom Cobb",
+        profile: "https://image.tmdb.org/t/p/w500/wo2hJpn04vbtmh0B9utCFdsQhxM.jpg",
+        scenes: ["inc-scene-1", "inc-scene-2"],
+        otherMovies: [
+          {
+            id: "m-titanic",
+            title: "Titanic",
+            year: 1997,
+            poster: "https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg"
+          },
+          {
+            id: "m-revenant",
+            title: "The Revenant",
+            year: 2015,
+            poster: "https://image.tmdb.org/t/p/w500/oXUWEc5i3wYyFnL1Ycu8ppxxPvs.jpg"
+          }
+        ]
+      },
+      {
+        id: "actor-2",
+        name: "Joseph Gordon-Levitt",
+        character: "Arthur",
+        profile: "https://image.tmdb.org/t/p/w500/zSuXCR6xCKIL1IkLOPmE9LYG2tk.jpg",
+        scenes: ["inc-scene-2"],
+        otherMovies: [
+          {
+            id: "m-500days",
+            title: "500 Days of Summer",
+            year: 2009,
+            poster: "https://image.tmdb.org/t/p/w500/5SjtNPD1bb182vzQccvEUpXHFjN.jpg"
+          }
+        ]
       }
     ]
   },

@@ -1,29 +1,20 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { StarIcon, Clock, Film, ArrowLeft, ExternalLink, PlayCircle, Share2 } from 'lucide-react';
+import { StarIcon, Clock, Film, ArrowLeft, ExternalLink, PlayCircle, Music, Users } from 'lucide-react';
 import { toast } from 'sonner';
 import { Movie } from '@/utils/movieData';
+import SceneDetails from './SceneDetails';
+import CastMemberCard from './CastMemberCard';
+import SoundtrackList from './SoundtrackList';
+import SocialShare from './SocialShare';
 
 interface MovieResultProps {
   movie: Movie;
 }
 
 const MovieResult = ({ movie }: MovieResultProps) => {
-  const [copied, setCopied] = useState(false);
-
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href)
-      .then(() => {
-        setCopied(true);
-        toast.success('Link copied to clipboard');
-        setTimeout(() => setCopied(false), 2000);
-      })
-      .catch(err => {
-        console.error('Could not copy text: ', err);
-        toast.error('Failed to copy link');
-      });
-  };
+  const [activeTab, setActiveTab] = useState<'streaming' | 'scenes' | 'cast' | 'soundtrack' | 'similar'>('streaming');
 
   return (
     <div className="animate-fade-in">
@@ -85,70 +76,184 @@ const MovieResult = ({ movie }: MovieResultProps) => {
               </p>
               
               <div className="flex flex-wrap gap-3">
-                <button
-                  onClick={handleShare}
-                  className="inline-flex items-center justify-center h-10 px-4 py-2 text-sm font-medium rounded-md bg-white/10 text-white hover:bg-white/20 transition-colors"
-                >
-                  <Share2 className="mr-2 h-4 w-4" />
-                  {copied ? 'Copied!' : 'Share'}
-                </button>
+                <SocialShare title={`Check out ${movie.title} (${movie.year})`} />
               </div>
             </div>
           </div>
         </div>
       </div>
       
-      <div className="max-w-7xl mx-auto px-6 md:px-10">
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">Where to Watch</h2>
+      <div className="max-w-7xl mx-auto px-6 md:px-10 mb-20">
+        {/* Tabs Navigation */}
+        <div className="flex items-center space-x-1 overflow-x-auto pb-4 mb-6 scrollbar-hide border-b border-border">
+          <button
+            onClick={() => setActiveTab('streaming')}
+            className={`px-4 py-2 text-sm font-medium rounded-t-lg whitespace-nowrap ${
+              activeTab === 'streaming'
+                ? 'bg-accent/10 text-accent'
+                : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+            }`}
+          >
+            Where to Watch
+          </button>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {movie.streamingOptions.map((option, index) => (
-              <a
-                key={index}
-                href={option.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="glass-panel rounded-lg p-4 flex items-center justify-between hover:shadow-lg transition-all duration-300 group"
-              >
-                <div className="flex items-center">
-                  <div className="bg-accent/10 rounded-full p-2 mr-3">
-                    <PlayCircle className="h-6 w-6 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-medium">{option.name}</p>
-                    {option.price && (
-                      <p className="text-sm text-muted-foreground">Rent from {option.price}</p>
-                    )}
-                  </div>
-                </div>
-                
-                <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-accent transition-colors" />
-              </a>
-            ))}
-          </div>
+          {movie.scenes && movie.scenes.length > 0 && (
+            <button
+              onClick={() => setActiveTab('scenes')}
+              className={`px-4 py-2 text-sm font-medium rounded-t-lg whitespace-nowrap ${
+                activeTab === 'scenes'
+                  ? 'bg-accent/10 text-accent'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+              }`}
+            >
+              Scenes
+            </button>
+          )}
+          
+          {movie.cast && movie.cast.length > 0 && (
+            <button
+              onClick={() => setActiveTab('cast')}
+              className={`px-4 py-2 text-sm font-medium rounded-t-lg whitespace-nowrap ${
+                activeTab === 'cast'
+                  ? 'bg-accent/10 text-accent'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+              }`}
+            >
+              Cast
+            </button>
+          )}
+          
+          {movie.soundtrack && movie.soundtrack.length > 0 && (
+            <button
+              onClick={() => setActiveTab('soundtrack')}
+              className={`px-4 py-2 text-sm font-medium rounded-t-lg whitespace-nowrap ${
+                activeTab === 'soundtrack'
+                  ? 'bg-accent/10 text-accent'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+              }`}
+            >
+              Soundtrack
+            </button>
+          )}
+          
+          <button
+            onClick={() => setActiveTab('similar')}
+            className={`px-4 py-2 text-sm font-medium rounded-t-lg whitespace-nowrap ${
+              activeTab === 'similar'
+                ? 'bg-accent/10 text-accent'
+                : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+            }`}
+          >
+            Similar Movies
+          </button>
         </div>
         
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">Similar Movies</h2>
-          
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {movie.similarMovies.map((similar) => (
-              <div key={similar.id} className="group">
-                <div className="aspect-[2/3] rounded-lg overflow-hidden bg-gray-100 mb-2 transition-transform duration-300 group-hover:shadow-lg group-hover:scale-105">
-                  <img 
-                    src={similar.poster} 
-                    alt={similar.title} 
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-                <h3 className="font-medium text-sm truncate">{similar.title}</h3>
-                <p className="text-xs text-muted-foreground">{similar.year}</p>
-              </div>
-            ))}
+        {/* Streaming Options Tab */}
+        {activeTab === 'streaming' && (
+          <div className="animate-fade-in">
+            <h2 className="text-2xl font-bold mb-6 flex items-center">
+              <PlayCircle className="h-6 w-6 mr-2 text-accent" />
+              Where to Watch
+            </h2>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {movie.streamingOptions.map((option, index) => (
+                <a
+                  key={index}
+                  href={option.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass-panel rounded-lg p-4 flex items-center justify-between hover:shadow-lg transition-all duration-300 group"
+                >
+                  <div className="flex items-center">
+                    <div className="bg-accent/10 rounded-full p-2 mr-3">
+                      <PlayCircle className="h-6 w-6 text-accent" />
+                    </div>
+                    <div>
+                      <p className="font-medium">{option.name}</p>
+                      {option.price && (
+                        <p className="text-sm text-muted-foreground">Rent from {option.price}</p>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-accent transition-colors" />
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
+        
+        {/* Scenes Tab */}
+        {activeTab === 'scenes' && movie.scenes && (
+          <div className="animate-fade-in">
+            <h2 className="text-2xl font-bold mb-6 flex items-center">
+              <Film className="h-6 w-6 mr-2 text-accent" />
+              Notable Scenes
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {movie.scenes.map((scene) => (
+                <SceneDetails key={scene.id} scene={scene} />
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {/* Cast Tab */}
+        {activeTab === 'cast' && movie.cast && (
+          <div className="animate-fade-in">
+            <h2 className="text-2xl font-bold mb-6 flex items-center">
+              <Users className="h-6 w-6 mr-2 text-accent" />
+              Cast Members
+            </h2>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {movie.cast.map((castMember) => (
+                <CastMemberCard key={castMember.id} castMember={castMember} />
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {/* Soundtrack Tab */}
+        {activeTab === 'soundtrack' && movie.soundtrack && (
+          <div className="animate-fade-in">
+            <h2 className="text-2xl font-bold mb-6 flex items-center">
+              <Music className="h-6 w-6 mr-2 text-accent" />
+              Soundtrack
+            </h2>
+            
+            <SoundtrackList soundtrack={movie.soundtrack} />
+          </div>
+        )}
+        
+        {/* Similar Movies Tab */}
+        {activeTab === 'similar' && (
+          <div className="animate-fade-in">
+            <h2 className="text-2xl font-bold mb-6 flex items-center">
+              <Film className="h-6 w-6 mr-2 text-accent" />
+              Similar Movies
+            </h2>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {movie.similarMovies.map((similar) => (
+                <div key={similar.id} className="group">
+                  <div className="aspect-[2/3] rounded-lg overflow-hidden bg-gray-100 mb-2 transition-transform duration-300 group-hover:shadow-lg group-hover:scale-105">
+                    <img 
+                      src={similar.poster} 
+                      alt={similar.title} 
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <h3 className="font-medium text-sm truncate">{similar.title}</h3>
+                  <p className="text-xs text-muted-foreground">{similar.year}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
