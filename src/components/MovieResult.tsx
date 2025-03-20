@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { StarIcon, Clock, Film, ArrowLeft, ExternalLink, PlayCircle, Music, Users } from 'lucide-react';
 import { toast } from 'sonner';
-import { Movie } from '@/utils/movieData';
+import { Movie } from '@/types/movieTypes';
 import SceneDetails from './SceneDetails';
 import CastMemberCard from './CastMemberCard';
 import SoundtrackList from './SoundtrackList';

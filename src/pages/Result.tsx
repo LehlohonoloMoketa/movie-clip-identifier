@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MovieResult from '@/components/MovieResult';
-import { getRandomMovie, Movie } from '@/utils/movieData';
+import { getRandomMovie } from '@/utils/movieUtils';
+import { Movie } from '@/types/movieTypes';
 import { AlertCircle } from 'lucide-react';
 
 const Result = () => {
