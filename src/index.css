@@ -35,6 +35,12 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* --- Custom Text Colors for Theme --- */
+    --text-primary-light: #ffffff;
+    --text-primary-accent-light: #2563eb; /* Tailwind blue-600 */
+    --text-primary-dark: #ffffff;
+    --text-primary-accent-dark: #ffd700; /* Gold */
   }
   /* Dark mode colors below */
   .dark {
@@ -66,6 +72,27 @@
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 240 3.7% 20.9%;
     --sidebar-ring: 217.2 64% 50.8%;
+
+    /* --- Custom Text Colors for Theme -- */
+    --text-primary-light: #ffffff;
+    --text-primary-accent-light: #2563eb;
+    --text-primary-dark: #ffffff;
+    --text-primary-accent-dark: #ffd700;
+  }
+}
+
+@layer utilities {
+  .text-primary-light {
+    color: var(--text-primary-light);
+  }
+  .text-primary-accent-light {
+    color: var(--text-primary-accent-light);
+  }
+  .text-primary-dark {
+    color: var(--text-primary-dark);
+  }
+  .text-primary-accent-dark {
+    color: var(--text-primary-accent-dark);
   }
 }
 
