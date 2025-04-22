@@ -39,8 +39,8 @@
     /* --- Custom Text Colors for Theme --- */
     --text-primary-light: #ffffff;
     --text-primary-accent-light: #2563eb; /* Tailwind blue-600 */
-    --text-primary-dark: #ffffff;
-    --text-primary-accent-dark: #ffd700; /* Gold */
+    --text-primary-dark: #ffd700; /* Gold */
+    --text-primary-accent-dark: #ffffff;
   }
   /* Dark mode colors below */
   .dark {
@@ -76,8 +76,8 @@
     /* --- Custom Text Colors for Theme -- */
     --text-primary-light: #ffffff;
     --text-primary-accent-light: #2563eb;
-    --text-primary-dark: #ffffff;
-    --text-primary-accent-dark: #ffd700;
+    --text-primary-dark: #ffd700;
+    --text-primary-accent-dark: #ffffff;
   }
 }
 
