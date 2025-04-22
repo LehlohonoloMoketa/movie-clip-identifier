@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Film } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -22,7 +23,7 @@ const Header = () => {
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 px-6 md:px-10 ${
-        scrolled ? 'bg-white/80 backdrop-blur-md shadow-sm' : 'bg-transparent'
+        scrolled ? 'bg-white/80 backdrop-blur-md shadow-sm dark:bg-background/90' : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -61,12 +62,15 @@ const Header = () => {
           </a>
         </nav>
         
-        <Link
-          to="/"
-          className="btn-accent rounded-full text-xs py-2 px-4 md:text-sm md:py-2 md:px-6 animate-slide-up"
-        >
-          Identify Movie
-        </Link>
+        <div className="flex items-center">
+          <Link
+            to="/"
+            className="btn-accent rounded-full text-xs py-2 px-4 md:text-sm md:py-2 md:px-6 animate-slide-up"
+          >
+            Identify Movie
+          </Link>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
